@@ -4,16 +4,22 @@ local MovementEventType =
     COMPLETE = 1,
     LOOP_COMPLETE = 2,
 }
-EffectArmature = class("EffectAnimation")
+import(".CocosArmature")
+EffectArmature = class("EffectAnimation", CocosArmature)
 
 EffectArmature.effectName = ""
-EffectArmature.armature = nil
 EffectArmature.rootNode = nil
 EffectArmature.disposed = false
 EffectArmature.added = false
 
+function EffectArmature:ctor()
+	dump(self)
+	self.effectName = ""
+	self.rootNode = nil
+	self.disposed = false
+	self.added = false
+end
 function EffectArmature:create(effectName)
-	local effectArmature = EffectArmature.new()
 	local params = 
 	{
 		animationName = effectName,
@@ -22,28 +28,25 @@ function EffectArmature:create(effectName)
 			--[MovementEventType.LOOP_COMPLETE] = self.onLoopMovementComplete
 		}
 	}
-	local armature = CocosArmature:createArmature(params, effectArmature)
-	--dump(armature.effects)
-	effectArmature.armature = armature
-	--dump(armature)
+	local effectArmature = self:new()
+	effectArmature:initWithParamsAndCaller(params, effectArmature)
 	effectArmature.effectName = effectName
 	return effectArmature
 end
 
 function EffectArmature:bindRootAndPlay(rootNode)
 	self.rootNode = rootNode
-	self.armature:setPosition(ccp(rootNode:getPositionX(), rootNode:getPositionY()))
-	self.armature:play("effect")
+	self:setPosition(ccp(rootNode:getPositionX(), rootNode:getPositionY()))
+	self:play("effect")
 	table.insert(rootNode.effects, self)
 	if not self.added then
 		-- first time added to scene layer
-		self.armature:addTo(rootNode:getParent())
+		self:addTo(rootNode:getParent())
 		self.added = true
 	end
 end
 
 function EffectArmature:onMovementComplete()
-	--dump(self.rootNode)
 	if self.rootNode ~= nil then 
 		self.rootNode.effectCnt = self.rootNode.effectCnt - 1
 		local pos = nil
@@ -54,17 +57,16 @@ function EffectArmature:onMovementComplete()
 			end
 		end
 		table.remove(self.rootNode.effects, pos)
-		self.armature:setVisible(false)
 	end
 	self:dispose()
 end
 
 function EffectArmature:dispose()
-	--self.armature:setVisible(false)
+	self:setVisible(false)
 	self.disposed = true
 end
 
 function EffectArmature:recycle()
-	self.armature:setVisible(true)
+	self:setVisible(true)
 	self.disposed = false
 end

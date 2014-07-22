@@ -27,6 +27,14 @@ function EffectMgr:get(effectName)
 	end)
 end
 
+function EffectMgr:addEffect(armature, effectName)
+	local effect = EffectMgr:create(effectName)
+	if armature.xFliped then
+		effect:flipX()
+	end
+	effect:bindRootAndPlay(armature)
+end
+
 -- function EffectMgr:find(effectArmature)
 -- 	if EffectMgr.effectPool[effectArmature.effectName] == nil then
 -- 		return nil

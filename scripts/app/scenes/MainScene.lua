@@ -6,6 +6,7 @@ local MovementEventType =
     LOOP_COMPLETE = 2,
 }
 require("app.common.CocosArmature")
+require("app.common.EffectMgr")
 local MainScene = class("MainScene", function()
     return display.newScene("MainScene")
 end)
@@ -27,7 +28,7 @@ function MainScene:ctor()
     blinkAction = CCBlink:create(1, 2)
     repeatAction = CCRepeat:create(blinkAction, 2)
 
-    labelSize:runAction(repeatAction)
+    --labelSize:runAction(repeatAction)
 
     --CCArmatureDataManager:sharedArmatureDataManager():addArmatureFileInfo("Hero/Hero.ExportJson")
     --local armature = CCArmature:create("Hero")
@@ -50,7 +51,7 @@ function MainScene:ctor()
     armature2:setScale(0.5);
     armature2:pos(display.cx, display.cy)
     armature2:addTo(self)
-    armature2:addEffect("dumpling")
+    EffectMgr:addEffect(armature2, "dumpling")
 
     CCArmatureDataManager:sharedArmatureDataManager():addArmatureFileInfo("AnimationTest/AnimationTest.ExportJson")
     armature3 = CCArmature:create("AnimationTest")
@@ -73,11 +74,10 @@ function MainScene:ctor()
     }
     armature = CocosArmature:createArmature(params, self)
     armature:play("attack")
-    --dump(armature)
     armature:setScale(0.5);
     armature:pos(display.cx, display.cy)
     armature:addTo(self)
-    armature:addEffect("paAni")
+    EffectMgr:addEffect(armature, "paAni")
     local runBtn = ui.newTTFLabelMenuItem({
         text = "run",
         listener = handler(self, self.onRunBtn),
@@ -117,12 +117,10 @@ function MainScene:onRunBtn(obj)
 end
 
 function MainScene:onStopBtn(obj)
-    --print(type(obj).." "..obj)
     if armature3 ~= nil then
         armature3:getAnimation():stop()
     end
-    --print("77777777777777")
-    dump(armature.effects[1].armature.effects[1].armature.effects[1].armature.effects[1].armature.effects)
+    armature:flipX()
 end
 
 function MainScene:onEnter()
@@ -131,6 +129,7 @@ end
 
 function MainScene:onExit()
     armature3 = nil
+    armature = nil
 end
 
 return MainScene

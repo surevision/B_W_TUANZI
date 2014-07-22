@@ -10,7 +10,7 @@ end
 
 function MyApp:run()
     CCFileUtils:sharedFileUtils():addSearchPath("res/")
-    self:enterScene("TestScene")
+    self:enterScene("MainScene")
 end
 
 return MyApp

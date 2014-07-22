@@ -12,7 +12,7 @@ function TestScene:ctor()
 	--testLayer:addTo(self)
 	local sizeLabel = ui.newTTFLabel({text = "hello world", size = 36, align = ui.TEXT_ALIGN_CENTER})
 	sizeLabel:pos(display.cx, display.cy)
-    --blinkAction = CCBlink:create(1, 1)	-- crash when stop
+    --blinkAction = CCBlink:create(1, 1)	-- cause crash when stop
     --repeatAction = CCRepeat:create(blinkAction, 2)
 
     --sizeLabel:runAction(repeatAction)
