@@ -70,6 +70,14 @@ function CocosArmature:addEffect(effectName)
 		effect:flipX()
 	end
 	effect:bindRootAndPlay(self)
+	print("self:")
+	dump(self)
+	print("self.effects:")
+	dump(self.effects)
+	print("effect.rootNode:")
+	dump(effect.rootNode)
+	print("effect.effects:")
+	dump(effect.effects)
 end
 
 function CocosArmature:flipX()

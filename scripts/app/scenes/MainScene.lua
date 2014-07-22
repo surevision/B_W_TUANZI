@@ -25,9 +25,9 @@ function MainScene:ctor()
     labelSize:addTo(self)
 
     blinkAction = CCBlink:create(1, 2)
-    repeatAction = CCRepeat:create(blinkAction, 5)
+    repeatAction = CCRepeat:create(blinkAction, 2)
 
-    --labelSize:runAction(repeatAction)
+    labelSize:runAction(repeatAction)
 
     --CCArmatureDataManager:sharedArmatureDataManager():addArmatureFileInfo("Hero/Hero.ExportJson")
     --local armature = CCArmature:create("Hero")
@@ -73,7 +73,7 @@ function MainScene:ctor()
     }
     armature = CocosArmature:createArmature(params, self)
     armature:play("attack")
-    dump(armature)
+    --dump(armature)
     armature:setScale(0.5);
     armature:pos(display.cx, display.cy)
     armature:addTo(self)
@@ -117,11 +117,12 @@ function MainScene:onRunBtn(obj)
 end
 
 function MainScene:onStopBtn(obj)
-    print(type(obj).." "..obj)
+    --print(type(obj).." "..obj)
     if armature3 ~= nil then
         armature3:getAnimation():stop()
     end
-    dump(armature.effects[1].armature.effects)
+    --print("77777777777777")
+    dump(armature.effects[1].armature.effects[1].armature.effects[1].armature.effects[1].armature.effects)
 end
 
 function MainScene:onEnter()

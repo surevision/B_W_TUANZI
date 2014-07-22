@@ -23,9 +23,9 @@ function EffectArmature:create(effectName)
 		}
 	}
 	local armature = CocosArmature:createArmature(params, effectArmature)
-	dump(armature.effects)
+	--dump(armature.effects)
 	effectArmature.armature = armature
-	dump(armature)
+	--dump(armature)
 	effectArmature.effectName = effectName
 	return effectArmature
 end
@@ -43,7 +43,7 @@ function EffectArmature:bindRootAndPlay(rootNode)
 end
 
 function EffectArmature:onMovementComplete()
-	dump(self.rootNode)
+	--dump(self.rootNode)
 	if self.rootNode ~= nil then 
 		self.rootNode.effectCnt = self.rootNode.effectCnt - 1
 		local pos = nil
