@@ -76,7 +76,7 @@ end
 
 -- 当前纵向方向
 function GameCharacter:dirY()
-	(self.spY >= 0.0 and DIRECTIONS.UP) or DIRECTIONS.DOWN
+	return (self.spY >= 0.0 and DIRECTIONS.UP) or DIRECTIONS.DOWN
 end
 
 -- 根据主角实际坐标取得对应的地图图块坐标

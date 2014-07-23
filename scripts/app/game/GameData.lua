@@ -4,5 +4,14 @@
 --
 GameData = class("GameData")
 
+-- 开关
+GameData.gameSwitches = {}
+-- 变量
+GameData.gameVairables = {}
+-- 独立开关
+GameData.gameSelfSwitches = {}
+-- 
 GameData.gameMap = nil
 GameData.gamePlayer = nil
+
+return GameData

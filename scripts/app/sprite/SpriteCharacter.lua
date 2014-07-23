@@ -40,8 +40,8 @@ function SpriteCharacter:jump()
 end
 
 function SpriteCharacter:update()
-	self.real_x = self.real_x + self.spX * ((self.character:dirX() == DIRECTIONS:RIGHT and 1) or -1)
-	self.real_y = self.real_y + self.spY * ((self.character:dirY() == DIRECTIONS:UP and 1) or -1)
+	self.real_x = self.real_x + self.spX * ((self.character:dirX() == DIRECTIONS.RIGHT and 1) or -1)
+	self.real_y = self.real_y + self.spY * ((self.character:dirY() == DIRECTIONS.UP and 1) or -1)
 	self:adjustXY()
 	self.spX = self:refreshSpX()
 	self.spY = self:refreshSpY()
