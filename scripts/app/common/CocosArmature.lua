@@ -1,10 +1,11 @@
+import(".Global")
 
 CocosArmature = class("CocosArmature", function()
-	return display.newLayer()
+	return display.newLayer("CocosArmature")
 end)
 
-CocosArmature.baseFolder = "armature/"
-CocosArmature.fileExtensionName = ".ExportJson"
+CocosArmature.BaseFolder = "armature/"
+CocosArmature.FileExtensionName = ".ExportJson"
 
 CocosArmature.funcCaller = nil
 CocosArmature.mainArmature = nil
@@ -34,7 +35,7 @@ function CocosArmature:initWithParamsAndCaller(params, caller)
 	local frameEvents = params.frameEvents or {}
 	local movementEvents = params.movementEvents or {}
 	local exportFileType = params.exportFileType or "COCOSTUDIO"
-    CCArmatureDataManager:sharedArmatureDataManager():addArmatureFileInfo(CocosArmature.baseFolder..animationName..CocosArmature.fileExtensionName)
+    CCArmatureDataManager:sharedArmatureDataManager():addArmatureFileInfo(CocosArmature.BaseFolder..animationName..CocosArmature.FileExtensionName)
 	self:setCaller(caller)
     self.mainArmature = CCArmature:create(animationName)
     self:setContentSize(self.mainArmature:getContentSize())
@@ -84,19 +85,31 @@ function CocosArmature:remArmature(animationName)
 	self.registedMovementEventHandlers[animationName] = nil
 end
 
-function CocosArmature:addEffect(effectName)
-	local effect = EffectMgr:create(effectName)
-	if self.xFliped then
-		effect:flipX()
-	end
-	effect:bindRootAndPlay(self)
-end
+-- function CocosArmature:addEffect(effectName)
+-- 	local effect = EffectMgr:create(effectName)
+-- 	if self.xFliped then
+-- 		effect:flipX()
+-- 	end
+-- 	effect:bindRootAndPlay(self)
+-- end
 
-function CocosArmature:flipX()
-	self.mainArmature:setScaleX((self.xFliped and 1) or -1)
-	self.xFliped = not self.xFliped
+-- 设置朝向， 所有角色默认朝右
+function CocosArmature:flipX(dir2)
+	-- 
+	print(dir2)
+	if dir2 == nil then
+		-- 未指定方向
+		self.mainArmature:setScaleX((self.xFliped and 1) or -1)
+		self.xFliped = not self.xFliped
+	else		
+		-- 指定方向
+		self.mainArmature:setScaleX((dir2 == DIRECTIONS.RIGHT and 1) or -1)
+		self.xFliped = (dir2 == DIRECTIONS.LEFT and true) or false
+	end
 	-- flip all effects
 	table.foreach(self.effects, function(_, effect)
-		effect:flipX()
+		effect:flipX(dir2)
 	end)
+	print(self.xFliped)
+
 end

@@ -1,9 +1,5 @@
-local MovementEventType =
-{
-    START = 0,
-    COMPLETE = 1,
-    LOOP_COMPLETE = 2,
-}
+
+import(".Global")
 import(".CocosArmature")
 EffectArmature = class("EffectAnimation", CocosArmature)
 

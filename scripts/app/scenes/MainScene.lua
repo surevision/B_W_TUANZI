@@ -1,17 +1,14 @@
 -- ↓ require common
-local MovementEventType =
-{
-    START = 0,
-    COMPLETE = 1,
-    LOOP_COMPLETE = 2,
-}
-require("app.common.CocosArmature")
-require("app.common.EffectMgr")
+
+import("..common.Global")
+
+import("..common.CocosArmature")
+import("..common.EffectMgr")
 local MainScene = class("MainScene", function()
     return display.newScene("MainScene")
 end)
 function MainScene:ctor()
-    
+    id = 0
     local node = SceneReader:sharedSceneReader():createNodeWithSceneFile("publish/RPGGame.json"):addTo(self)
 
     ui.newTTFLabel({text = "Hello, World", size = 64, align = ui.TEXT_ALIGN_CENTER})
@@ -112,7 +109,9 @@ end
 function MainScene:onRunBtn(obj)
     --print(type(obj).." "..obj)
     if armature3 ~= nil then
-        armature3:getAnimation():play("run")
+        armature3:getAnimation():playWithIndex(id)
+        id = id + 1
+        id = id % armature3:getAnimation():getMovementCount()
     end
 end
 
@@ -120,7 +119,7 @@ function MainScene:onStopBtn(obj)
     if armature3 ~= nil then
         armature3:getAnimation():stop()
     end
-    armature:flipX()
+    armature:flipX(DIRECTIONS.RIGHT)
 end
 
 function MainScene:onEnter()
