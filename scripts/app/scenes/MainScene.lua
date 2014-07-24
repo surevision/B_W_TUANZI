@@ -4,6 +4,7 @@ import("..common.Global")
 
 import("..common.CocosArmature")
 import("..common.EffectMgr")
+import("..game.GameMap")
 local MainScene = class("MainScene", function()
     return display.newScene("MainScene")
 end)
@@ -54,8 +55,15 @@ function MainScene:ctor()
     armature3 = CCArmature:create("AnimationTest")
     armature3:getAnimation():play("run")
     armature3:setScale(0.5);
+
+    local skin = CCSkin:createWithSpriteFrameName("角色_png/腰带.png")
+    armature3:getBone("武器"):addDisplay(skin, 1)
+    armature3:getBone("武器"):changeDisplayWithIndex(1, true)
+
     armature3:pos(display.cx, display.cy / 2)
     armature3:addTo(self)
+    local tab = {1, 2, nil, 3}
+    print(#tab, table.maxn(tab))
     params = 
     {
         animationName = "Hero",
@@ -92,6 +100,10 @@ function MainScene:ctor()
     ui.newMenu({runBtn, stopBtn}):addTo(self)
 
     layer = GUIReader:shareReader():widgetFromJsonFile("SampleUIAnimation/SampleUIAnimation.json")
+
+    local gameMap = GameMap:new()
+    gameMap:setup(1)
+
     --[[
     local lb = CCLabelTTF:create("tttt ttttttttt ttttt ttt tttt ttt tt ttt", "Arial.ttf", 36, cc.SizeMake(128, 100), kCCTextAlignmentLeft)
     lb:setAnchorPoint(0, 0)

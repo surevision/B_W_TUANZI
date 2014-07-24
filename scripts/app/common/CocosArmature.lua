@@ -85,6 +85,13 @@ function CocosArmature:remArmature(animationName)
 	self.registedMovementEventHandlers[animationName] = nil
 end
 
+function CocosArmature:width()
+	return self.getContentSize().width
+end
+function CocosArmature:height()
+	return self.getContentSize().height
+end
+
 -- function CocosArmature:addEffect(effectName)
 -- 	local effect = EffectMgr:create(effectName)
 -- 	if self.xFliped then

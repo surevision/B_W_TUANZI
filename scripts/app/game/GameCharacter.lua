@@ -88,11 +88,22 @@ end
 -- 更新横向速度
 function GameCharacter:refreshSpX()
 	self:adjustXY()
-	
+	-- 判定左右方向上块是否可通行
+	if self:dirX == DIRECTIONS.RIGHT then
+		local passable = GameData.gameMap:passable(self.x + 1, self.y)
+		if not passable then
+			if self.real_x + self:width()
+		end
+	else
+		local passable = GameData.gameMap:passable(self.x - 1, self.y)
+		if not passable then
+			
+		end
+	end
 end
 
 -- 更新纵向速度
 function GameCharacter:refreshSpY()
 	self:adjustXY()
-
+	-- 判定脚下块是否可通行
 end
