@@ -31,7 +31,7 @@ GameCharacter.JUMP_SPEED = 24.0
 GameCharacter.G = 9.8
 
 -- 当前移动状态
-GameCharacter.currentWalkStates = {GameCharacter.WALK_STATES.IDLE}
+GameCharacter.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
 
 -- x方向速度
 GameCharacter.spX = 0.0
@@ -39,11 +39,11 @@ GameCharacter.spX = 0.0
 -- y方向速度
 GameCharacter.spY = 0.0
 
--- 对应的地图图块坐标
+-- 对应的地图图块坐标，左上角为原点
 GameCharacter.x = 0
 GameCharacter.y = 0
 
--- 实际地图坐标
+-- 实际地图坐标， 左上角为原点
 GameCharacter.real_x = 0.0
 GameCharacter.real_y = 0.0
 
@@ -51,7 +51,7 @@ GameCharacter.real_y = 0.0
 GameCharacter.mainColor = GameCharacter.COLORS.NONE
 
 function GameCharacter:ctor()
-	self.currentWalkStates = {GameCharacter.WALK_STATES.IDLE}
+	self.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
 	self.spX = 0.0
 	self.spY = 0.0
 	self.x = 0
@@ -79,6 +79,11 @@ function GameCharacter:dirY()
 	return (self.spY >= 0.0 and DIRECTIONS.UP) or DIRECTIONS.DOWN
 end
 
+-- 移动
+function GameCharacter:move()
+	self.real_x = self.real_x + self.spX * ((self:dirX() == DIRECTIONS.RIGHT and 1) or -1)
+	self.real_y = self.real_y + self.spY
+end
 -- 根据主角实际坐标取得对应的地图图块坐标
 function GameCharacter:adjustXY()
 	self.x = (self.real_x - (self.real_x % GameData.gameMap.TILE_WIDTH)) / GameData.gameMap.TILE_WIDTH
@@ -86,24 +91,54 @@ function GameCharacter:adjustXY()
 end
 
 -- 更新横向速度
-function GameCharacter:refreshSpX()
-	self:adjustXY()
+function GameCharacter:refreshSpXAndAjustRealX(spriteWidth)
 	-- 判定左右方向上块是否可通行
 	if self:dirX == DIRECTIONS.RIGHT then
 		local passable = GameData.gameMap:passable(self.x + 1, self.y)
-		if not passable then
-			if self.real_x + self:width()
+		if not passable then 	-- 不可通行
+			-- 碰撞判定
+			if self.real_x + spriteWidth / 2 >= (self.x + 1) * GameData.gameMap.TILE_WIDTH then
+				-- 调整位置
+				self.real_x = (self.x + 1) * GameData.gameMap.TILE_WIDTH - spriteWidth / 2
+
+				self.spX = 0
+			end
 		end
 	else
 		local passable = GameData.gameMap:passable(self.x - 1, self.y)
-		if not passable then
-			
+		if not passable then			
+			-- 碰撞判定
+			if self.real_x - spriteWidth / 2 <= (self.x - 1) * GameData.gameMap.TILE_WIDTH + GameData.gameMap.TILE_WIDTH then
+				-- 调整位置
+				self.real_x = (self.x - 1) * GameData.gameMap.TILE_WIDTH + GameData.gameMap.TILE_WIDTH + spriteWidth / 2
+				-- 重置横向速度
+				self.spX = 0
+			end
 		end
 	end
 end
 
 -- 更新纵向速度
-function GameCharacter:refreshSpY()
-	self:adjustXY()
+function GameCharacter:refreshSpYAndAjustRealY(spriteHeight)
 	-- 判定脚下块是否可通行
+	if self:dirX == DIRECTIONS.DOWN then
+		local passable = GameData.gameMap:passable(self.x, self.y + 1)
+		if not passable then 	-- 不可通行
+			-- 碰撞判定
+			if self.real_y + spriteHeight / 2 >= (self.y + 1) * GameData.gameMap.TILE_HEIGHT then
+				-- 调整位置
+				self.real_y = (self.y + 1) * GameData.gameMap.TILE_HEIGHT - spriteHeight / 2
+				-- 重置纵向速度
+				self.spY = 0
+			end
+		else -- 可通行，应用重力
+			if self:dirY() == DIRECTIONS.UP and self:spY() == 0.0 then -- 未跳跃
+				-- 脚下是空的，应用重力
+				self.spY = GameCharacter.JUMP_SPEED
+			else -- 跳跃中
+				-- 纵向速度叠加重力
+				self.spY = self.spY + GameCharacter.G
+			end
+		end
+	end
 end

@@ -25,10 +25,12 @@ end
 --
 function SpriteCharacter:idle()
 	self:play("idle")
+	self.character.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
 end
 
 function SpriteCharacter:walk()
 	self:play("walk")
+	self.character.currentWalkStates[GameCharacter.WALK_STATES.WALK] = true
 end
 
 function SpriteCharacter:attack()
@@ -37,14 +39,25 @@ end
 
 function SpriteCharacter:jump()
 	self:play("jump")
+	self.character.currentWalkStates[GameCharacter.WALK_STATES.JUMP] = true
 end
 
 function SpriteCharacter:update()
-	self.real_x = self.real_x + self.spX * ((self.character:dirX() == DIRECTIONS.RIGHT and 1) or -1)
-	self.real_y = self.real_y + self.spY * ((self.character:dirY() == DIRECTIONS.UP and 1) or -1)
-	self:adjustXY()
-	self.spX = self:refreshSpX()
-	self.spY = self:refreshSpY()
+	-- 移动
+	self.character:move(self:width(), self:height())
+	-- 修正位置，改变速度
+	self.character:refreshSpXAndAjustRealX(self:width)
+	self.character:refreshSpYAndAjustRealY(self:height)
+	-- 改变状态
+	if self.character.spX == 0 and self.character.spY == 0 then
+		self:idle() 	-- 进入闲置状态
+	elseif self.character.spX ~= 0 then
+		self:walk()
+	elseif self.character.spY ~= 0 then
+		self:jump()
+	end
+	-- 取得新地图坐标
+	self.character:adjustXY()
 end
 
 
