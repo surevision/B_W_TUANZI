@@ -86,10 +86,10 @@ function CocosArmature:remArmature(animationName)
 end
 
 function CocosArmature:width()
-	return self.getContentSize().width
+	return self:getContentSize().width
 end
 function CocosArmature:height()
-	return self.getContentSize().height
+	return self:getContentSize().height
 end
 
 -- function CocosArmature:addEffect(effectName)

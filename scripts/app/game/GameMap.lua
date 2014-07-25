@@ -39,15 +39,15 @@ function GameMap:setup(mapId)
 	self.tmxMap = CCTMXTiledMap:create(GameMap.BaseFolder..tostring(mapId)..GameMap.FileExtensionName)
 	
 	self.events = self.tmxMap:objectGroupNamed("events")
-	dump(self.events)
+	--dump(self.events)
 	self.tilemapLayers = {self.tmxMap:layerNamed("layer1"), self.tmxMap:layerNamed("layer2"), self.tmxMap:layerNamed("layer3")}
-	dump(self.tilemapLayers)
-	print(self.tmxMap:getMapSize().width, self.tmxMap:getMapSize().height)
-	self:passable(22, 7)
+	--dump(self.tilemapLayers)
+	--print(self.tmxMap:getMapSize().width, self.tmxMap:getMapSize().height)
 end
 
 -- 取得地图大小
 function GameMap:width()
+	print("self == GameData.gameMap33333333222222222222", self == GameData.gameMap, x, y, self.tmxMap)
 	return self.tmxMap:getMapSize().width
 end
 function GameMap:height()
@@ -56,8 +56,16 @@ end
 
 -- 指定坐标的可通行度
 function GameMap:passable(x, y)
+	print("88888888888888888888888888888")
+	print("self == GameData.gameMap", self == GameData.gameMap, x, y)
+	if (x < 0) or (x >= self:width()) or (y < 0) or (y >= self:height()) then
+		return
+	end
+	--dump(GameData.gameMap)
 	for i = 1, 3 do
-		local gid = self.tilemapLayers[i]:tileGIDAt(ccp(x, y))
+		--print(i, self.tilemapLayers[i], "99999999999999", x, y)
+		local layer = self.tilemapLayers[i]
+		local gid = layer:tileGIDAt(ccp(x, y))
 		if gid ~= 0 then
 			local prop = self.tmxMap:propertiesForGID(gid)
 			if prop and prop:objectForKey("passable") and prop:objectForKey("passable"):getCString() == "0" then
@@ -65,5 +73,6 @@ function GameMap:passable(x, y)
 			end
 		end
 	end
+
 	return true
 end

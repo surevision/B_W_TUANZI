@@ -6,19 +6,19 @@ GameCharacter = class("GameCharacter")
 
 -- 移动状态枚举
 GameCharacter.WALK_STATES = {
-	IDLE,	-- 待机
-	WALK,	-- 行走
-	JUMP,	-- 跳跃
+	IDLE = 0,	-- 待机
+	WALK = 1,	-- 行走
+	JUMP = 2,	-- 跳跃
 
 }
 
 -- 颜色种类
 GameCharacter.COLORS = {
-	NONE,
-	BLUE,
-	GREEN,
-	RED,
-	YELLOW
+	NONE = 0,
+	BLUE = 1,
+	GREEN = 2,
+	RED = 3,
+	YELLOW = 4
 }
 
 -- 行走速度
@@ -87,13 +87,15 @@ end
 -- 根据主角实际坐标取得对应的地图图块坐标
 function GameCharacter:adjustXY()
 	self.x = (self.real_x - (self.real_x % GameData.gameMap.TILE_WIDTH)) / GameData.gameMap.TILE_WIDTH
-	self.y = GameData.gameMap.height - (self.real_y - (self.real_y % GameData.gameMap.TILE_HEIGHT)) / GameData.gameMap.TILE_HEIGHT
+	self.y = GameData.gameMap:height() - (self.real_y - (self.real_y % GameData.gameMap.TILE_HEIGHT)) / GameData.gameMap.TILE_HEIGHT
 end
 
 -- 更新横向速度
 function GameCharacter:refreshSpXAndAjustRealX(spriteWidth)
 	-- 判定左右方向上块是否可通行
-	if self:dirX == DIRECTIONS.RIGHT then
+	if self:dirX() == DIRECTIONS.RIGHT then
+	    print("3")
+	    dump(GameData.gameMap)
 		local passable = GameData.gameMap:passable(self.x + 1, self.y)
 		if not passable then 	-- 不可通行
 			-- 碰撞判定
@@ -121,7 +123,7 @@ end
 -- 更新纵向速度
 function GameCharacter:refreshSpYAndAjustRealY(spriteHeight)
 	-- 判定脚下块是否可通行
-	if self:dirX == DIRECTIONS.DOWN then
+	if self:dirY() == DIRECTIONS.DOWN then
 		local passable = GameData.gameMap:passable(self.x, self.y + 1)
 		if not passable then 	-- 不可通行
 			-- 碰撞判定
