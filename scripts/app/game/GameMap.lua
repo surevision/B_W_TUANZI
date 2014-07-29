@@ -47,7 +47,6 @@ end
 
 -- 取得地图大小
 function GameMap:width()
-	print("self == GameData.gameMap33333333222222222222", self == GameData.gameMap, x, y, self.tmxMap)
 	return self.tmxMap:getMapSize().width
 end
 function GameMap:height()
@@ -56,10 +55,8 @@ end
 
 -- 指定坐标的可通行度
 function GameMap:passable(x, y)
-	print("88888888888888888888888888888")
-	print("self == GameData.gameMap", self == GameData.gameMap, x, y)
 	if (x < 0) or (x >= self:width()) or (y < 0) or (y >= self:height()) then
-		return
+		return false
 	end
 	--dump(GameData.gameMap)
 	for i = 1, 3 do

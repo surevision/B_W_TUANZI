@@ -39,33 +39,15 @@ function TestScene:ctor()
 
     GameData.gameMap = gameMap
     local gameCharacter = GameCharacter:new()
-    gameCharacter.x = 2
-    gameCharacter.y = 8
+    gameCharacter:setPos(3, 9)
     
     spriteCharacter = SpriteCharacter:create("Hero", gameCharacter)
-    print("3333333333333333333333")
+    spriteCharacter:refreshPosition()
 
     --print(GameData.gameMap:passable(3, 8))
     CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(handler(self, self.update), 0, false)
-
-    spriteCharacter:addTo(self)   
-    print("1")
-    dump(GameData.gameMap)
-
-    	spriteCharacter:update()
-
-    	spriteCharacter:update()
-
-    	spriteCharacter:update()
-
-    	spriteCharacter:update()
-
-    	spriteCharacter:update()
-
-    	spriteCharacter:update()
-
-    	
-    	spriteCharacter:update()
+    gameMap.tmxMap:addTo(self)
+    spriteCharacter:addTo(self)      	
 
 end
 
@@ -74,11 +56,7 @@ function TestScene:onCallback()
 end
 
 function TestScene:update(dt)
-	if flag == nil then
-		flag = true
-	    print("2")
-	    dump(GameData.gameMap)
-    end
+    spriteCharacter:update()
 	--print(spriteCharacter.character.x)
 end
 return TestScene

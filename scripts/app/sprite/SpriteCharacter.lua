@@ -60,7 +60,6 @@ function SpriteCharacter:update()
 	self.character:adjustXY()
 	-- 设置显示位置
 	self:refreshPosition()
-	print(self.character.x, self.character.y, "4444444444444444444444444444")
 end
 
 -- 更新精灵位置
@@ -80,6 +79,8 @@ function SpriteCharacter:refreshPosition()
 	self:setPositionY(display.height - self.character.real_y)
 end
 
-
+function SpriteCharacter:bindRoot(rootNode)
+	self:addTo(rootNode)
+end
 
 
