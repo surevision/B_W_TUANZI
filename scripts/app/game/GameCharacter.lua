@@ -25,10 +25,10 @@ GameCharacter.COLORS = {
 GameCharacter.WALK_SPEED = 8.0
 
 -- 跳跃初速度
-GameCharacter.JUMP_SPEED = 24.0
+GameCharacter.JUMP_SPEED = 12.0
 
 -- 重力加速度
-GameCharacter.G = 9.8
+GameCharacter.G = 0.98
 
 -- 当前移动状态
 GameCharacter.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
@@ -60,12 +60,14 @@ function GameCharacter:ctor()
 	self.real_y = 0.0
 	self.mainColor = GameCharacter.COLORS.NONE
 end
+function GameCharacter:setPos(x, y)
+	self.x = x
+	self.y = y
+	self.real_x = x * GameMap.TILE_WIDTH
+	self.real_y = y * GameMap.TILE_WIDTH
+end
 -- 取当前方向
 function GameCharacter:currDs()
-	-- local res = {}
-	-- table.insert(res, (self.spX >= 0.0 and DIRECTIONS.RIGHT) or DIRECTIONS.LEFT)
-	-- table.insert(res, (self.spY >= 0.0 and DIRECTIONS.UP) or DIRECTIONS.DOWN)
-	-- return res
 	return {self:dirX(), self:dirY()}
 end
 
@@ -76,7 +78,7 @@ end
 
 -- 当前纵向方向
 function GameCharacter:dirY()
-	return (self.spY >= 0.0 and DIRECTIONS.UP) or DIRECTIONS.DOWN
+	return (self.spY >= 0.0 and DIRECTIONS.DOWN) or DIRECTIONS.UP
 end
 
 -- 移动
@@ -94,9 +96,8 @@ end
 function GameCharacter:refreshSpXAndAjustRealX(spriteWidth)
 	-- 判定左右方向上块是否可通行
 	if self:dirX() == DIRECTIONS.RIGHT then
-	    print("3")
-	    dump(GameData.gameMap)
 		local passable = GameData.gameMap:passable(self.x + 1, self.y)
+		print("right:", passable)
 		if not passable then 	-- 不可通行
 			-- 碰撞判定
 			if self.real_x + spriteWidth / 2 >= (self.x + 1) * GameData.gameMap.TILE_WIDTH then
@@ -108,6 +109,7 @@ function GameCharacter:refreshSpXAndAjustRealX(spriteWidth)
 		end
 	else
 		local passable = GameData.gameMap:passable(self.x - 1, self.y)
+		print("left:", passable)
 		if not passable then			
 			-- 碰撞判定
 			if self.real_x - spriteWidth / 2 <= (self.x - 1) * GameData.gameMap.TILE_WIDTH + GameData.gameMap.TILE_WIDTH then
@@ -122,14 +124,15 @@ end
 
 -- 更新纵向速度
 function GameCharacter:refreshSpYAndAjustRealY(spriteHeight)
-	-- 判定脚下块是否可通行
+	-- 判定脚下块是否可通行，头顶的块永远可通行
 	if self:dirY() == DIRECTIONS.DOWN then
 		local passable = GameData.gameMap:passable(self.x, self.y + 1)
+		print("down:", passable, self.x, self.y, self.spY, self.real_x, self.real_y)
 		if not passable then 	-- 不可通行
 			-- 碰撞判定
 			if self.real_y + spriteHeight / 2 >= (self.y + 1) * GameData.gameMap.TILE_HEIGHT then
 				-- 调整位置
-				self.real_y = (self.y + 1) * GameData.gameMap.TILE_HEIGHT - spriteHeight / 2
+				--self.real_y = (self.y + 1) * GameData.gameMap.TILE_HEIGHT - spriteHeight / 2
 				-- 重置纵向速度
 				self.spY = 0
 			end
