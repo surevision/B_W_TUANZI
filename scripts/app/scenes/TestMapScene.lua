@@ -7,5 +7,5 @@ TestMapScene = class("TestMapScene", function()
 end)
 
 function TestMapScene:ctor()
-	
+	TestLayer2:create():addTo(self, 0, "testLayer")
 end

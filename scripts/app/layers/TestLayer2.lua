@@ -27,35 +27,27 @@ function TestLayer2:ctor()
 	self:addChild(drawNode)
 
 
-    local gameMap = GameMap:new()
-    gameMap:setup(1)
+	local gameMap = GameMap:new()
+	gameMap:setup(1)
 
-    GameData.gameMap = gameMap
-    local gameCharacter = GameCharacter:new()
-    gameCharacter.x = 2
-    gameCharacter.y = 8
-    
-    self.spriteCharacter = SpriteCharacter:create("Hero", gameCharacter)
-    print("3333333333333333333333")
+	GameData.gameMap = gameMap
+	local gameCharacter = GameCharacter:new()
+	gameCharacter.x = 2
+	gameCharacter.y = 8
+	
+	self.spriteCharacter = SpriteCharacter:create("TuanZi", gameCharacter)
 
-    --print(GameData.gameMap:passable(3, 8))
-    CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(handler(self, self.update), 0, false)
-    f = self
-    self.spriteCharacter:pos(100, 100)
-    self.spriteCharacter:addTo(self)
-    print("1")
-    dump(GameData.gameMap)
+	--print(GameData.gameMap:passable(3, 8))
+	CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(handler(self, self.update), 0, false)
+	f = self
+	self.spriteCharacter:pos(100, 100)
+	self.spriteCharacter:addTo(self)
 
 	--dump(self)
 end
 
 function TestLayer2:update(dt)
-	if flag == nil then
-		flag = true
-	    print("2")
-	    dump(GameData.gameMap.tmxMap)
-    	self.spriteCharacter:update()
-    end
+	self.spriteCharacter:update()
 	--print(spriteCharacter.character.x)
 end
 

@@ -10,7 +10,7 @@
  </tileset>
  <layer name="layer1" width="100" height="15">
   <data encoding="base64" compression="zlib">
-   eJztk8EJgDAMRQN6KfTgHOJk6mLqMq7hwR3UUwvSg5KaCu/Bu4affCICAAAAYMPmRHZnneJO70WG09FbJ4GLxQdLYnJBLTR+oo1ydRn+a/bBksjRxx/I3Ud8V02fztfI+PWOb/ehj3L6sMhCH+ksa4Ul2dSImPIAanUNXA==
+   eJztk0EOQEAMRStsJunCOcTJcDGcwg1cw8IdsOokMgt0TMV/yds2v/0p0XOmTGEIAAAAAH7H4ohWlzrFmYaJ2t2OUycBByOLluidqIXGT1RerjrCfw0sWiJGH18gdh/+XTW9Ol8j49s73t0HfdjpI0UW9BHOMufQkmUBIQy5AfrLDh4=
   </data>
  </layer>
  <layer name="layer2" width="100" height="15">

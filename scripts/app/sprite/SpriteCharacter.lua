@@ -24,13 +24,18 @@ end
 
 --
 function SpriteCharacter:idle()
-	--self:play("idle")
-	self.character.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
+	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] then
+		self:play("idle")
+		self.character.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
+	end
 end
 
 function SpriteCharacter:walk()
-	--self:play("walk")
-	self.character.currentWalkStates[GameCharacter.WALK_STATES.WALK] = true
+	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.WALK] then
+		self:play("walk")
+		self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] = false
+		self.character.currentWalkStates[GameCharacter.WALK_STATES.WALK] = true
+	end
 end
 
 function SpriteCharacter:attack()
@@ -38,23 +43,29 @@ function SpriteCharacter:attack()
 end
 
 function SpriteCharacter:jump()
-	--self:play("jump")
-	self.character.currentWalkStates[GameCharacter.WALK_STATES.JUMP] = true
+	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.JUMP] then
+		self:play("jump")
+		self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] = false
+		self.character.currentWalkStates[GameCharacter.WALK_STATES.JUMP] = true
+	end
 end
 
 function SpriteCharacter:update()
 	-- 移动
 	self.character:move(self:width(), self:height())
 	-- 修正位置，改变速度
-	self.character:refreshSpXAndAjustRealX(32)
-	self.character:refreshSpYAndAjustRealY(32)
+	self.character:refreshSpXAndAjustRealX(self:width())
+	self.character:refreshSpYAndAjustRealY(self:height())
 	-- 改变状态
 	if self.character.spX == 0 and self.character.spY == 0 then
 		self:idle() 	-- 进入闲置状态
+		print("idle")
 	elseif self.character.spX ~= 0 then
 		self:walk()
+		print("walk")
 	elseif self.character.spY ~= 0 then
 		self:jump()
+		print("jump")
 	end
 	-- 取得新地图坐标
 	self.character:adjustXY()
@@ -76,7 +87,7 @@ function SpriteCharacter:refreshPosition()
 		self:setPositionX(display.cx)
 	end
 	-- 纵方向直接赋值不需滚动地图？
-	self:setPositionY(display.height - self.character.real_y)
+	self:setPositionY(display.height - self.character.real_y - (display.height - GameData.gameMap:height() * GameMap.TILE_WIDTH))
 end
 
 function SpriteCharacter:bindRoot(rootNode)

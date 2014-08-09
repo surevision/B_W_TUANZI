@@ -39,15 +39,26 @@ function TestScene:ctor()
 
     GameData.gameMap = gameMap
     local gameCharacter = GameCharacter:new()
-    gameCharacter:setPos(3, 9)
+    gameCharacter:setPos(13, 0)
     
-    spriteCharacter = SpriteCharacter:create("Hero", gameCharacter)
+    spriteCharacter = SpriteCharacter:create("TuanZi", gameCharacter)
     spriteCharacter:refreshPosition()
 
     --print(GameData.gameMap:passable(3, 8))
     CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(handler(self, self.update), 0, false)
     gameMap.tmxMap:addTo(self)
-    spriteCharacter:addTo(self)      	
+    spriteCharacter:addTo(self)      
+	spriteCharacter:refreshPosition()	
+
+	local jumpticker = CCCallFunc:create(handler(self, function()
+		spriteCharacter.character.spY = -GameCharacter.JUMP_SPEED
+	end))
+	local delay = CCDelayTime:create(2)
+	local array = CCArray:create()
+	array:addObject(delay)
+	array:addObject(jumpticker)
+	local repeater = CCRepeatForever:create(CCSequence:create(array))
+	spriteCharacter:runAction(repeater)
 
 end
 
