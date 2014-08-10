@@ -11,6 +11,8 @@ BaseLayer.uiLayout = nil
 -- 
 function BaseLayer:ctor(filePath)
 	print("BaseLayer ctor with:", filePath)
+	self.uiExportFilePath = nil
+	self.uiLayout = nil
 	if (filePath ~= nil) then
 		self:initWithExportFile(filePath)
 	end
@@ -32,7 +34,7 @@ end
 
 function BaseLayer:registUIWithEventHandler(uiName, onEventHandler)
 	local t_ui = UIHelper:seekWidgetByName(self.uiLayout, uiName)
-	--print(uiName, onEventHandler, t_ui)
+	--print(uiName, onEventHandler, t_ui, self.uiLayout)
 	if onEventHandler ~= nil then
 		--dump(self.uiLayout)
 		t_ui:addTouchEventListener(onEventHandler)

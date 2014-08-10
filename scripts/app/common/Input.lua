@@ -24,3 +24,4 @@ end
 function Input:isJump()
 
 end
+

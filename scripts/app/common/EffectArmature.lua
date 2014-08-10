@@ -24,7 +24,7 @@ function EffectArmature:create(effectName)
 			--[MovementEventType.LOOP_COMPLETE] = self.onLoopMovementComplete
 		}
 	}
-	local effectArmature = self:new()
+	local effectArmature = self.new()
 	effectArmature:initWithParamsAndCaller(params, effectArmature)
 	effectArmature.effectName = effectName
 	return effectArmature

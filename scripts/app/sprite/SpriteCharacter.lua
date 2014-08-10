@@ -13,7 +13,7 @@ function SpriteCharacter:ctor()
 	self.character = nil
 end
 function SpriteCharacter:create(_animationName, gameCharacter)
-	local spriteCharacter = self:new()
+	local spriteCharacter = self.new()
 	spriteCharacter.character = gameCharacter
 	local params = {
 		animationName = _animationName
@@ -23,14 +23,14 @@ function SpriteCharacter:create(_animationName, gameCharacter)
 end
 
 --
-function SpriteCharacter:idle()
+function SpriteCharacter:showIdle()
 	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] then
 		self:play("idle")
 		self.character.currentWalkStates = {[GameCharacter.WALK_STATES.IDLE] = true}
 	end
 end
 
-function SpriteCharacter:walk()
+function SpriteCharacter:showWalk()
 	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.WALK] then
 		self:play("walk")
 		self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] = false
@@ -38,11 +38,11 @@ function SpriteCharacter:walk()
 	end
 end
 
-function SpriteCharacter:attack()
+function SpriteCharacter:showAttack()
 	--self:play("attack")
 end
 
-function SpriteCharacter:jump()
+function SpriteCharacter:showJump()
 	if not self.character.currentWalkStates[GameCharacter.WALK_STATES.JUMP] then
 		self:play("jump")
 		self.character.currentWalkStates[GameCharacter.WALK_STATES.IDLE] = false
@@ -58,13 +58,13 @@ function SpriteCharacter:update()
 	self.character:refreshSpYAndAjustRealY(self:height())
 	-- 改变状态
 	if self.character.spX == 0 and self.character.spY == 0 then
-		self:idle() 	-- 进入闲置状态
+		self:showIdle() 	-- 进入闲置状态
 		print("idle")
 	elseif self.character.spX ~= 0 then
-		self:walk()
+		self:showWalk()
 		print("walk")
 	elseif self.character.spY ~= 0 then
-		self:jump()
+		self:showJump()
 		print("jump")
 	end
 	-- 取得新地图坐标

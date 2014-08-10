@@ -22,7 +22,7 @@ GameCharacter.COLORS = {
 }
 
 -- 行走速度
-GameCharacter.WALK_SPEED = 8.0
+GameCharacter.WALK_SPEED = 2.0
 
 -- 跳跃初速度
 GameCharacter.JUMP_SPEED = 13.0
@@ -148,4 +148,20 @@ function GameCharacter:refreshSpYAndAjustRealY(spriteHeight)
 	else
 		self.spY = self.spY + GameCharacter.G
 	end
+end
+
+function GameCharacter:jump()
+	self.spY = self.spY == 0 and -GameCharacter.JUMP_SPEED or 0
+end
+
+function GameCharacter:walkRight()
+	self.spX = GameCharacter.WALK_SPEED
+end
+
+function GameCharacter:walkLeft()
+	self.spX = -GameCharacter.WALK_SPEED
+end
+
+function GameCharacter:walkIdle()
+	self.spX = 0
 end

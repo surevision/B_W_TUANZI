@@ -4,6 +4,8 @@
 --
 require("app.layers.BaseLayer")
 require("app.layers.Test2Layer")
+require("app.layers.InputLayer")
+
 
 TestLayer = class("TestLayer", BaseLayer)
 

@@ -47,7 +47,7 @@ function TestScene:ctor()
     --print(GameData.gameMap:passable(3, 8))
     CCDirector:sharedDirector():getScheduler():scheduleScriptFunc(handler(self, self.update), 0, false)
     gameMap.tmxMap:addTo(self)
-    spriteCharacter:addTo(self)      
+    spriteCharacter:addTo(self, 127, 12)      
 	spriteCharacter:refreshPosition()	
 
 	local jumpticker = CCCallFunc:create(handler(self, function()
@@ -58,8 +58,12 @@ function TestScene:ctor()
 	array:addObject(delay)
 	array:addObject(jumpticker)
 	local repeater = CCRepeatForever:create(CCSequence:create(array))
-	spriteCharacter:runAction(repeater)
+	-- spriteCharacter:runAction(repeater)
 
+	local uilayer = InputLayer:create(self)
+	uilayer:setAnchorPoint(0, 0)
+	uilayer:pos(0, 0)
+	uilayer:addTo(self, 128)
 end
 
 function TestScene:onCallback()
@@ -68,6 +72,44 @@ end
 
 function TestScene:update(dt)
     spriteCharacter:update()
+
+	if spriteCharacter.character.real_x <= display.cx then 
+		-- 不到中心，在左侧
+	elseif spriteCharacter.character.real_x >= GameData.gameMap:width() - display.cx then 
+		-- 不到中心，在右侧
+	else
+		-- 在中心
+		GameData.gameMap.tmxMap:setPositionX(display.cx - spriteCharacter.character.real_x)
+	end
 	--print(spriteCharacter.character.x)
 end
+
+function TestScene:onJump(sender, eventType)
+	--dump(self.uiExportFilePath)
+	
+	if eventType == TOUCH_EVENT_BEGAN then
+		spriteCharacter.character:jump()
+	end
+end
+
+function TestScene:onLeft(sender, eventType)
+	--dump(self.uiExportFilePath)
+	
+	if eventType == TOUCH_EVENT_BEGAN then
+		spriteCharacter.character:walkLeft()
+	elseif eventType == TOUCH_EVENT_ENDED then
+		spriteCharacter.character.walkIdle()
+	end
+end
+
+function TestScene:onRight(sender, eventType)
+	--dump(self.uiExportFilePath)
+	
+	if eventType == TOUCH_EVENT_BEGAN then
+		spriteCharacter.character:walkRight()
+	elseif eventType == TOUCH_EVENT_ENDED then
+		spriteCharacter.character.walkIdle()
+	end
+end
+
 return TestScene
