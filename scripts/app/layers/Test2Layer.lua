@@ -2,7 +2,7 @@
 -- Author: SureBrz
 -- Date: 2014-07-14 10:40:46
 --
-require("app.Layers.BaseLayer")
+import("app.layers.BaseLayer")
 
 Test2Layer = class("Test2Layer", BaseLayer)
 

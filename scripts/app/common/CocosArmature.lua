@@ -4,7 +4,7 @@ CocosArmature = class("CocosArmature", function()
 	return display.newLayer("CocosArmature")
 end)
 
-CocosArmature.BaseFolder = "armature/"
+CocosArmature.BaseFolder = "Armature/"
 CocosArmature.FileExtensionName = ".ExportJson"
 
 CocosArmature.funcCaller = nil
