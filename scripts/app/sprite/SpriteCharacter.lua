@@ -76,18 +76,19 @@ end
 -- 更新精灵位置
 function SpriteCharacter:refreshPosition()
 	-- note: 大概要注意适配时的缩放系数？
+	print(self.character.real_x, GameData.gameMap:rwidth())
 	if self.character.real_x <= display.cx then 
 		-- 不到中心，在左侧
 		self:setPositionX(self.character.real_x)
-	elseif self.character.real_x >= GameData.gameMap:width() - display.cx then 
+	elseif self.character.real_x >= GameData.gameMap:rwidth() - display.cx then 
 		-- 不到中心，在右侧
-		self:setPositionX(self.character.real_x - GameData.gameMap:width() - display.cx)
+		self:setPositionX(GameData.gameMap:rwidth() - self.character.real_x + display.cx)
 	else
 		-- 在中心
 		self:setPositionX(display.cx)
 	end
 	-- 纵方向直接赋值不需滚动地图？
-	self:setPositionY(display.height - self.character.real_y - (display.height - GameData.gameMap:height() * GameMap.TILE_WIDTH))
+	self:setPositionY(display.height - self.character.real_y - (display.height - GameData.gameMap:rheight()))
 end
 
 function SpriteCharacter:bindRoot(rootNode)

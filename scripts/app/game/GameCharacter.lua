@@ -83,7 +83,8 @@ end
 
 -- 移动
 function GameCharacter:move()
-	self.real_x = self.real_x + self.spX * ((self:dirX() == DIRECTIONS.RIGHT and 1) or -1)
+	print(self.spX, "[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[[", self.spY)
+	self.real_x = self.real_x + self.spX
 	self.real_y = self.real_y + self.spY
 end
 -- 根据主角实际坐标取得对应的地图图块坐标
@@ -151,7 +152,7 @@ function GameCharacter:refreshSpYAndAjustRealY(spriteHeight)
 end
 
 function GameCharacter:jump()
-	self.spY = self.spY == 0 and -GameCharacter.JUMP_SPEED or 0
+	self.spY = (not self.currentWalkStates[GameCharacter.WALK_STATES.JUMP]) and -GameCharacter.JUMP_SPEED or 0
 end
 
 function GameCharacter:walkRight()

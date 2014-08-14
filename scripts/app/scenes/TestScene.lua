@@ -64,6 +64,9 @@ function TestScene:ctor()
 	uilayer:setAnchorPoint(0, 0)
 	uilayer:pos(0, 0)
 	uilayer:addTo(self, 128)
+
+    local label = CCLabelTTF:create("h", "Arial", 12)
+    print(label:getContentSize())
 end
 
 function TestScene:onCallback()
@@ -71,16 +74,27 @@ function TestScene:onCallback()
 end
 
 function TestScene:update(dt)
-    spriteCharacter:update()
+    local label = CCLabelTTF:create("h", "Arial", 12)
+    print(label:getContentSize().width, "----------======================-------------")
+    label = CCLabelTTF:create("i", "Arial", 12)
+    print(label:getContentSize().width, "----------======================-------------")
+    label = CCLabelTTF:create("W", "Arial", 12)
+    print(label:getContentSize().width, "----------======================-------------")
+    label = CCLabelTTF:create("我", "Arial", 12)
+    print(label:getContentSize().width, "----------======================-------------")
+
 
 	if spriteCharacter.character.real_x <= display.cx then 
 		-- 不到中心，在左侧
-	elseif spriteCharacter.character.real_x >= GameData.gameMap:width() - display.cx then 
+	elseif spriteCharacter.character.real_x >= GameData.gameMap:rwidth() - display.cx then 
 		-- 不到中心，在右侧
 	else
 		-- 在中心
 		GameData.gameMap.tmxMap:setPositionX(display.cx - spriteCharacter.character.real_x)
 	end
+
+    spriteCharacter:update()
+
 	--print(spriteCharacter.character.x)
 end
 
@@ -98,17 +112,16 @@ function TestScene:onLeft(sender, eventType)
 	if eventType == TOUCH_EVENT_BEGAN then
 		spriteCharacter.character:walkLeft()
 	elseif eventType == TOUCH_EVENT_ENDED then
-		spriteCharacter.character.walkIdle()
+		spriteCharacter.character:walkIdle()
 	end
 end
 
 function TestScene:onRight(sender, eventType)
 	--dump(self.uiExportFilePath)
-	
 	if eventType == TOUCH_EVENT_BEGAN then
 		spriteCharacter.character:walkRight()
 	elseif eventType == TOUCH_EVENT_ENDED then
-		spriteCharacter.character.walkIdle()
+		spriteCharacter.character:walkIdle()
 	end
 end
 

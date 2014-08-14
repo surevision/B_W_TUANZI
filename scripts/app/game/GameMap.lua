@@ -45,12 +45,20 @@ function GameMap:setup(mapId)
 	--print(self.tmxMap:getMapSize().width, self.tmxMap:getMapSize().height)
 end
 
--- 取得地图大小
+-- 取得地图大小(tile个数)
 function GameMap:width()
 	return self.tmxMap:getMapSize().width
 end
 function GameMap:height()
 	return self.tmxMap:getMapSize().height
+end
+
+-- 取得地图大小(tile像素)
+function GameMap:rwidth()
+	return self.tmxMap:getMapSize().width * GameMap.TILE_WIDTH
+end
+function GameMap:rheight()
+	return self.tmxMap:getMapSize().height * GameMap.TILE_HEIGHT
 end
 
 -- 指定坐标的可通行度

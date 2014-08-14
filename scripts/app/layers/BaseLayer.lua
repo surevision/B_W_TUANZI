@@ -3,7 +3,7 @@
 -- Date: 2014-07-11 09:40:08
 --
 BaseLayer = class("BaseLayer", function()
-	return display.newLayer("BaseLayer")
+	return display.newLayer("BaseLayer") --return CCLayer:create()
 end)
 
 BaseLayer.uiExportFilePath = nil
